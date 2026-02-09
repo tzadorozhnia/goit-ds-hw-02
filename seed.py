@@ -14,7 +14,7 @@ def generate_fake_data(number_users, number_tasks) -> tuple():
     fake_data = faker.Faker()
 
 # Створимо набір юзерів у кількості NUMBER_USERS
-    for _ in range(NUMBER_USERS):
+    for _ in range(number_users):
         email = fake_data.unique.email()
         fullname = fake_data.name()
         fake_users.append((email, fullname))
@@ -34,11 +34,11 @@ def insert_data_to_db(users, status_list, tasks):
         cur = con.cursor()
         # Вставка даних
         cur.executemany("INSERT INTO users (email, fullname) VALUES (?, ?)", users)
-        cur.executemany("INSERT OR IGNORE INTO status (name) VALUES (?)", statuses)
+        cur.executemany("INSERT OR IGNORE INTO status (name) VALUES (?)", status_list)
         cur.executemany("INSERT INTO tasks (title, description, user_id, status_id) VALUES (?, ?, ?, ?)", tasks)
 
         con.commit()
-    print(f"{len(users)} users, {len(statuses)} statuses, {len(tasks)} tasks added to DB.")
+    print(f"{len(users)} users, {len(status_list)} statuses, {len(tasks)} tasks added to DB.")
 
 if __name__ == "__main__":
     users, tasks, statuses = generate_fake_data(NUMBER_USERS, NUMBER_TASKS)

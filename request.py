@@ -23,7 +23,7 @@ print("1. Отримати всі завдання певного користу
 sql = """
 SELECT *
 FROM tasks as t
-LEFT JOIN status as s ON t.status_id = s.id
+INNER JOIN status s ON t.status_id = s.id
 WHERE s.name = ?;
 """
 result = execute_query(sql, ("new",))
@@ -37,7 +37,7 @@ SET status_id = ?
 WHERE id = ?
    """
 
-result = execute_query(sql, (2,1,))
+result = execute_query(sql, (2,1,), True)
 print("3. Оновити статус конкретного завдання")
 
 # ---------------------------------------
@@ -67,7 +67,7 @@ FROM tasks t
 JOIN status s ON t.status_id = s.id
 WHERE s.name != ?
 """
-result = execute_query(sql, ("завершено",))
+result = execute_query(sql, ("completed",))
 print("6. Завдання, що не завершено:", result)
 
 # ---------------------------------------
